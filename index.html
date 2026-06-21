@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DayFlow — Your Day, Departures Board</title>
+<meta name="description" content="A departure-board for your day: plan tasks against real daylight, run a Pomodoro flip-clock, and track on-time completion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="board">
+
+  <header class="board__header">
+    <div class="header__brand">
+      <span class="brand__mark">DF</span>
+      <div class="brand__text">
+        <span class="brand__title">DAYFLOW</span>
+        <span class="brand__sub">DEPARTURES &middot; TODAY</span>
+      </div>
+    </div>
+
+    <div class="header__clock">
+      <span id="clockTime" class="clock__time">--:--:--</span>
+      <span id="clockDate" class="clock__date">-- --- ----</span>
+    </div>
+
+    <div class="header__weather" id="weatherBox">
+      <span class="weather__temp" id="weatherTemp">--&deg;</span>
+      <div class="weather__meta">
+        <span class="weather__cond" id="weatherCond">Locating…</span>
+        <span class="weather__sun" id="weatherSun">sunrise --:-- &middot; sunset --:--</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="dayarc" aria-label="24 hour day arc">
+    <div class="dayarc__label">
+      <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span>
+    </div>
+    <svg id="arcSvg" viewBox="0 0 1000 90" preserveAspectRatio="none" class="dayarc__svg" role="img" aria-label="Timeline of today showing daylight and scheduled tasks"></svg>
+  </section>
+
+  <main class="board__main">
+
+    <section class="panel panel--tasks" aria-label="Today's departures (tasks)">
+      <div class="panel__head">
+        <h2>TODAY'S DEPARTURES</h2>
+        <span class="panel__count" id="taskCount">0 scheduled</span>
+      </div>
+
+      <form id="taskForm" class="task-form">
+        <input type="text" id="taskTitle" placeholder="Task" maxlength="40" required>
+        <input type="time" id="taskTime" required>
+        <select id="taskDuration">
+          <option value="15">15m</option>
+          <option value="30" selected>30m</option>
+          <option value="60">60m</option>
+          <option value="120">2h</option>
+        </select>
+        <select id="taskTag">
+          <option value="focus">Focus</option>
+          <option value="indoor">Indoor</option>
+          <option value="outdoor">Outdoor</option>
+          <option value="errand">Errand</option>
+          <option value="health">Health</option>
+        </select>
+        <button type="submit" class="btn btn--add">ADD</button>
+      </form>
+
+      <ul id="taskList" class="flap-list" role="list"></ul>
+      <p id="taskEmpty" class="empty-state">No departures scheduled. Add your first task above — the board fills in as you plan your day.</p>
+    </section>
+
+    <aside class="panel panel--side">
+
+      <div class="panel panel--pomodoro" aria-label="Pomodoro timer">
+        <div class="panel__head">
+          <h2>FOCUS BLOCK</h2>
+          <span class="panel__count" id="pomoMode">WORK</span>
+        </div>
+        <div class="flip-clock" id="flipClock">
+          <span class="flip-digit" id="pomoMin">25</span>
+          <span class="flip-colon">:</span>
+          <span class="flip-digit" id="pomoSec">00</span>
+        </div>
+        <div class="pomo-controls">
+          <button id="pomoStart" class="btn btn--ghost">START</button>
+          <button id="pomoPause" class="btn btn--ghost" disabled>PAUSE</button>
+          <button id="pomoReset" class="btn btn--ghost">RESET</button>
+        </div>
+      </div>
+
+      <div class="panel panel--stats" aria-label="Punctuality stats">
+        <div class="panel__head">
+          <h2>ON-TIME PERFORMANCE</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat">
+            <span class="stat__value" id="statCompleted">0</span>
+            <span class="stat__label">COMPLETED</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value" id="statOnTime">0%</span>
+            <span class="stat__label">ON-TIME RATE</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value" id="statStreak">0</span>
+            <span class="stat__label">DAY STREAK</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </main>
+
+  <footer class="board__footer">
+    <div class="ticker">
+      <div class="ticker__track" id="tickerTrack">
+        <span id="tickerText">Loading today's announcement…</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
